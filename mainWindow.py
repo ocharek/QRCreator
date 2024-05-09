@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout, QPushButton, QTextEdit, QFileDialog, QGridLayout, QCheckBox
+from PySide6.QtWidgets import QWidget, QLabel, QPushButton, QTextEdit, QFileDialog, QGridLayout, QCheckBox
 from PySide6.QtGui import QTextOption, QIcon
 from PySide6.QtCore import Qt
 
@@ -33,10 +33,12 @@ class MainWindow(QWidget):
         # pathicon = QIcon("/IMG/file-explorer.png")
         # pathico = pathicon.pixmap(10, 10)
         # self.pathbut.setIcon(pathico)
+        self.pathbut.setVisible(False)
+        self.pathbut.clicked.connect(self.openDirectoryDialog)
+
         self.pathbox = QCheckBox(self)
         self.pathbox.setStyleSheet("QCheckBox::indicator { width: 20px; height: 20px; }")
         self.pathbox.stateChanged.connect(self.onPathCheckbox)
-        # self.button.clicked.connect(self.openDirectoryDialog)
         # Creating button
         self.crbut = QPushButton("Make It QR!")
         self.crbut.clicked.connect(self.makeQR)
@@ -54,28 +56,35 @@ class MainWindow(QWidget):
         self.show()
         self.activateWindow()
         # Setting start pos and size of window
-        self.setGeometry(100, 100, 300, 200)
+        self.setGeometry(100, 100, 300, 250)
         # Setting maximum size
         self.setMaximumHeight(100)
-        self.setMaximumWidth(100)
+        self.setMinimumWidth(250)
+        self.setMaximumWidth(250)
 
-    # def openDirectoryDialog(self):
-    #     # Show the directory dialog and get the selected directory
-    #     directory_dialog = QFileDialog(self)
-    #     directory_path = directory_dialog.getExistingDirectory(self, "Open Directory", "")
-    #
-    #     if directory_path:
-    #         print("Selected directory:", directory_path)
+    def openDirectoryDialog(self):
+        # Show the directory dialog and get the selected directory
+        directory_dialog = QFileDialog(self)
+        directory_path = directory_dialog.getExistingDirectory(self, "Open Directory", "")
+
+        if directory_path:
+            self.dir.setText(directory_path)
 
     def onPathCheckbox(self, state):
         if state == 2:
             self.dir.setEnabled(True)
+            self.pathbut.setVisible(True)
+            self.poss = True
         else:
             self.dir.setEnabled(False)
+            self.pathbut.setVisible(False)
+            self.poss = False
 
     def makeQR(self):
         dat = self.link.toPlainText()
-        qrCreate.qrcreator(dat)
+        ipath = self.dir.toPlainText()
+        print(self.poss, ipath)
+        qrCreate.qrcreator(dat, self.poss, ipath)
 
 
 # Needed classes and functions
