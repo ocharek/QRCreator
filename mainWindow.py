@@ -1,6 +1,6 @@
-from PySide6.QtWidgets import QWidget, QLabel, QPushButton, QTextEdit, QFileDialog, QGridLayout, QCheckBox
+from PySide6.QtWidgets import QWidget, QLabel, QPushButton, QLineEdit, QFileDialog, QGridLayout, QCheckBox
 from PySide6.QtGui import QTextOption, QIcon
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Signal
 
 import qrCreate
 
@@ -15,13 +15,10 @@ class MainWindow(QWidget):
         lab1 = QLabel('What should QR code contain?')
         # Managing value text field
         self.link = SingleLineTextEdit(self)
-        self.link.setWordWrapMode(QTextOption.WrapMode.NoWrap)
-        self.link.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.link.enterPressed.connect(self.makeQR)
         self.link.setFixedSize(220, 26)
         # Managing directory path text field and explorer button
         self.dir = SingleLineTextEdit(self)
-        self.dir.setWordWrapMode(QTextOption.WrapMode.NoWrap)
-        self.dir.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.dir.setEnabled(False)
         self.dir.setFixedSize(170, 26)
         self.dir.setStyleSheet("color: gray")
@@ -81,26 +78,22 @@ class MainWindow(QWidget):
             self.poss = False
 
     def makeQR(self):
-        dat = self.link.toPlainText()
-        ipath = self.dir.toPlainText()
-        print(self.poss, ipath)
-        qrCreate.qrcreator(dat, self.poss, ipath)
+        dat = self.link.text()
+        ipath = self.dir.text()
+        if "self.poss" in locals() or self.poss in globals():
+            qrCreate.qrcreator(dat, self.poss, ipath)
+        else:
+            qrCreate.qrcreator(dat, False, ipath)
 
 
 # Needed classes and functions
-class SingleLineTextEdit(QTextEdit):
+class SingleLineTextEdit(QLineEdit):
+    enterPressed = Signal()
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setAcceptRichText(False)  # Disable rich text pasting
 
     def keyPressEvent(self, event):
-        if event.key() == Qt.Key_Return or event.key() == Qt.Key_Enter:
-            event.ignore()  # Ignore Enter key press event
+        if event.key() == Qt.Key_Enter:
+            self.enterPressed.emit()  # Ignore Enter key press event
         else:
             super().keyPressEvent(event)
-
-    def insertFromMimeData(self, source):
-        # Prevent multiline text pasting
-        if source.hasText():
-            text = source.text().replace('\n', '')
-            self.insertPlainText(text)
