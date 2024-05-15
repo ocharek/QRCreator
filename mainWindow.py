@@ -1,6 +1,7 @@
 from PySide6.QtWidgets import QWidget, QLabel, QPushButton, QLineEdit, QFileDialog, QGridLayout, QCheckBox
-from PySide6.QtGui import QTextOption, QIcon
+from PySide6.QtGui import QTextOption, QIcon, QPixmap
 from PySide6.QtCore import Qt, Signal
+import os
 
 import qrCreate
 
@@ -20,34 +21,37 @@ class MainWindow(QWidget):
         # Managing directory path text field and explorer button
         self.dir = SingleLineTextEdit(self)
         self.dir.setEnabled(False)
-        self.dir.setFixedSize(170, 26)
+        self.dir.setFixedSize(190, 26)
         self.dir.setStyleSheet("color: gray")
-        self.dir.setPlaceholderText("Path where u want(if u want) save QR")
+        self.dir.setPlaceholderText("Path to save")
 
         self.pathbut = QPushButton(self)
         self.pathbut.setToolTip('Explore directories')
-        self.pathbut.setFixedSize(20, 20)
-        # pathicon = QIcon("/IMG/file-explorer.png")
-        # pathico = pathicon.pixmap(10, 10)
-        # self.pathbut.setIcon(pathico)
-        self.pathbut.setVisible(False)
+        self.pathbut.setFixedSize(25, 25)
+        image_path = "IMG/fexp.png"
+        if os.path.exists(image_path):
+            # Load the image
+            pixmap = QPixmap(image_path)
+            pixmap = pixmap.scaled(25, 25)
+
+            # Create and set the icon
+            icon = QIcon(pixmap)
+            self.pathbut.setIcon(icon)
+        else:
+            print("Image file not found:", image_path)
         self.pathbut.clicked.connect(self.openDirectoryDialog)
 
-        self.pathbox = QCheckBox(self)
-        self.pathbox.setStyleSheet("QCheckBox::indicator { width: 20px; height: 20px; }")
-        self.pathbox.stateChanged.connect(self.onPathCheckbox)
         # Creating button
         self.crbut = QPushButton("Make It QR!")
         self.crbut.clicked.connect(self.makeQR)
         # Taking value from text field
         # Create layout and adding items
         layout = QGridLayout()
-        layout.addWidget(lab1, 0, 0, 1, 3)
-        layout.addWidget(self.link, 1, 0, 1, 3)
+        layout.addWidget(lab1, 0, 0, 1, 2)
+        layout.addWidget(self.link, 1, 0, 1, 2)
         layout.addWidget(self.dir, 2, 0)
         layout.addWidget(self.pathbut, 2, 1)
-        layout.addWidget(self.pathbox)
-        layout.addWidget(self.crbut, 3, 0, 1, 3)
+        layout.addWidget(self.crbut, 3, 0, 1, 2)
         self.setLayout(layout)
         self.setWindowTitle("QR Creator")
         self.show()
@@ -67,20 +71,10 @@ class MainWindow(QWidget):
         if directory_path:
             self.dir.setText(directory_path)
 
-    def onPathCheckbox(self, state):
-        if state == 2:
-            self.dir.setEnabled(True)
-            self.pathbut.setVisible(True)
-            self.poss = True
-        else:
-            self.dir.setEnabled(False)
-            self.pathbut.setVisible(False)
-            self.poss = False
-
     def makeQR(self):
         dat = self.link.text()
         ipath = self.dir.text()
-        if "self.poss" in locals() or self.poss in globals():
+        if "self.poss" in locals() or "self.poss" in globals():
             qrCreate.qrcreator(dat, self.poss, ipath)
         else:
             qrCreate.qrcreator(dat, False, ipath)
@@ -93,7 +87,7 @@ class SingleLineTextEdit(QLineEdit):
         super().__init__(parent)
 
     def keyPressEvent(self, event):
-        if event.key() == Qt.Key_Enter:
-            self.enterPressed.emit()  # Ignore Enter key press event
+        if event.key() == Qt.Key_Enter or event.key() == Qt.Key_Return:
+            self.enterPressed.emit()  # MakeQR
         else:
             super().keyPressEvent(event)
