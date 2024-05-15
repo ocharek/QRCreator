@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12f42f13-36a2-4b73-9d5f-25e95880f317" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IMG/file-explorer.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mainWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/mainWindow.py" afterDir="false" />
-    </list>
+    <list default="true" id="12f42f13-36a2-4b73-9d5f-25e95880f317" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -129,7 +125,7 @@
       <workItem from="1715248311422" duration="3154000" />
       <workItem from="1715263642839" duration="2065000" />
       <workItem from="1715710334881" duration="2578000" />
-      <workItem from="1715756879081" duration="1971000" />
+      <workItem from="1715756879081" duration="2401000" />
     </task>
     <servers />
   </component>
@@ -148,7 +144,7 @@
     </option>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/QRCreator$main.coverage" NAME="main Coverage Results" MODIFIED="1715758863543" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/QRCreator$main.coverage" NAME="main Coverage Results" MODIFIED="1715759120323" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/QRCreator$mainWindow.coverage" NAME="mainWindow Coverage Results" MODIFIED="1715177000422" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/QRCreator$qrCreate.coverage" NAME="qrCreate Coverage Results" MODIFIED="1715176499629" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
