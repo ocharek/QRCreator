@@ -2,7 +2,7 @@ import qrcode
 
 def qrcreator(dat, poss, ipath):
     qr = qrcode.QRCode(
-        version=1,
+        version=2,
         error_correction=qrcode.constants.ERROR_CORRECT_H,
         box_size=14,
         border=2,
@@ -11,5 +11,5 @@ def qrcreator(dat, poss, ipath):
     qr.make(fit=True)
     img = qr.make_image()
     if poss:
-        img.save(f'{ipath}/qr.jpg')
+        img.save(f'{ipath}/qr.png')
     img.show()

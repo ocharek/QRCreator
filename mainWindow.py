@@ -1,5 +1,5 @@
-from PySide6.QtWidgets import QWidget, QLabel, QPushButton, QLineEdit, QFileDialog, QGridLayout, QCheckBox
-from PySide6.QtGui import QTextOption, QIcon, QPixmap
+from PySide6.QtWidgets import QWidget, QLabel, QPushButton, QLineEdit, QFileDialog, QGridLayout, QMessageBox
+from PySide6.QtGui import QIcon, QPixmap
 from PySide6.QtCore import Qt, Signal
 import os
 
@@ -15,11 +15,11 @@ class MainWindow(QWidget):
         # Label
         lab1 = QLabel('What should QR code contain?')
         # Managing value text field
-        self.link = SingleLineTextEdit(self)
+        self.link = enterP(self)
         self.link.enterPressed.connect(self.makeQR)
         self.link.setFixedSize(220, 26)
         # Managing directory path text field and explorer button
-        self.dir = SingleLineTextEdit(self)
+        self.dir = QLineEdit(self)
         self.dir.setEnabled(False)
         self.dir.setFixedSize(190, 26)
         self.dir.setStyleSheet("color: gray")
@@ -54,6 +54,7 @@ class MainWindow(QWidget):
         layout.addWidget(self.crbut, 3, 0, 1, 2)
         self.setLayout(layout)
         self.setWindowTitle("QR Creator")
+        self.setWindowIcon(QIcon('IMG/CrIcon.png'))
         self.show()
         self.activateWindow()
         # Setting start pos and size of window
@@ -63,6 +64,17 @@ class MainWindow(QWidget):
         self.setMinimumWidth(250)
         self.setMaximumWidth(250)
 
+        # Message box
+        self.nodat = QMessageBox()
+        self.nodat.setWindowTitle('Warning')
+        self.nodat.setWindowIcon(QIcon('IMG/warning.png'))
+        self.nodat.setText('You need to put some data into QR code')
+        self.nodat.setStandardButtons(QMessageBox.Ok)
+        self.nodat.setGeometry(150, 200, 0, 0)
+        self.nodat.setIcon(QMessageBox.Icon.Information)
+
+
+
     def openDirectoryDialog(self):
         # Show the directory dialog and get the selected directory
         directory_dialog = QFileDialog(self)
@@ -71,20 +83,22 @@ class MainWindow(QWidget):
         if directory_path:
             self.dir.setText(directory_path)
 
+    # QR maker func
     def makeQR(self):
         dat = self.link.text()
-        ipath = self.dir.text()
-        if "self.poss" in locals() or "self.poss" in globals():
-            qrCreate.qrcreator(dat, self.poss, ipath)
+        if dat != '':
+            ipath = self.dir.text()
+            if ipath != '':
+                qrCreate.qrcreator(dat, True, ipath)
+            else:
+                qrCreate.qrcreator(dat, False, ipath)
         else:
-            qrCreate.qrcreator(dat, False, ipath)
+            self.nodat.exec()
 
 
-# Needed classes and functions
-class SingleLineTextEdit(QLineEdit):
+# Action when Enter is pressed
+class enterP(QLineEdit):
     enterPressed = Signal()
-    def __init__(self, parent=None):
-        super().__init__(parent)
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Enter or event.key() == Qt.Key_Return:
